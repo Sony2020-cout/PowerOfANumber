@@ -1,0 +1,57 @@
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+
+double power_rec(double x, int n) {
+  if (n == 0) return 1;
+  if (n == 1) return x;
+  
+  double temp = power_rec(x, n/2);
+  if (n % 2 == 0)  {
+    return temp * temp;
+  } else {
+    return x * temp * temp;
+  }
+}
+double power(double x, int n) {
+  bool is_negative = false;
+  if (n < 0) {
+    is_negative = true;
+    n *= -1;
+  }
+double result = power_rec(x, n);
+if (is_negative) {
+    return 1 / result;
+  }
+return result;
+}
+bool test_power(double x, int n) {
+  double r1 = power(0.753, n);
+  double r2 = pow(0.753, n);
+  double diff = r1 - r2;
+  if (diff < 0) {
+    diff = diff * -1;
+  }
+  if (diff > 0.00000000001) {
+    cout << "Failed for " << x << ", " << n << endl;
+    return false;
+  }
+  return true;
+}
+int main(int argc, char* argv[]) {
+  
+  bool pass = true;
+  for (int n = -5; n <= 5; ++n) {
+    bool temp_pass = test_power(0.753, n);
+    pass &= temp_pass;
+  }
+pass &= test_power(0, 0);
+cout << "Power(0, 0) = " << pow(0, 0) << endl;
+if (pass) {
+    cout << "Passed." << endl;
+  } else {
+    cout << "Failed." << endl;
+  }
+}
